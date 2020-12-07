@@ -1,0 +1,20 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eks-staging
+  region: us-east-1
+
+availabilityZones: 
+  - us-east-1a
+  - us-east-1b
+
+nodeGroups:
+  - name: workers-1
+    instanceType: t2.small
+    desiredCapacity: 2
+    volumeSize: 30
+    availabilityZones: ["us-east-1a", "us-east-1b"]
+    ssh:
+      allow: true 
+      publicKeyPath: eks.pub
