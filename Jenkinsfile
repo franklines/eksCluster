@@ -11,8 +11,14 @@ pipeline {
             }
         }
         stage('Create Cluster') {
+            environment {
+                def CMD = 'cd /etc/eks/ && eksctl create cluster -f cluster.yml'
+            }
             steps {
-                sh('docker run --name tools -e AWS_ACCESS_KEY_ID=${params.AWS_ACCESS_ID} -e AWS_SECRET_ACCESS_KEY=${params.AWS_SECRET_KEY} tools:latest bash -c "cd /etc/eks/ && eksctl create cluster -f cluster.yml"')
+                sh '''
+                    set +x
+                    docker run --name tools -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY tools:latest bash -c "$CMD"
+                '''
             }
         }
     }
